@@ -1,8 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
+import { ThirdwebProvider } from "thirdweb/react";
+import App from "./App";
+import './index.css';
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    main
-  </React.StrictMode>
-);
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  <ThirdwebProvider>
+    <Router>
+      <App />
+    </Router>
+  </ThirdwebProvider>
+)
