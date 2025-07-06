@@ -9,6 +9,8 @@ import { getContract, prepareContractCall } from "thirdweb";
 import { defineChain } from "thirdweb/chains";
 import { client } from "../thirdweb";
 import { createWallet, injectedProvider } from "thirdweb/wallets";
+import { readContract } from "thirdweb";
+import { ethers } from "ethers";
 
 const StateContext = createContext();
 
@@ -76,6 +78,36 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
+  const getCampaigns = async () => {
+    try {
+      const data = await readContract({
+        contract,
+        method:
+          "function getCampaigns() view returns ((address owner, string title, string description, uint256 targetAmount, uint256 currentAmount, uint256 deadline, string imageUrl, address[] backers, uint256[] donations)[])",
+        params: [],
+      });
+
+      console.log("Campaigns data:", data);
+
+      // const campaigns = await contract.call("getCampaigns");
+      return data.map((campaign, i) => ({
+        owner: campaign.owner,
+        title: campaign.title,
+        description: campaign.description,
+        target: ethers.formatEther(campaign.targetAmount.toString()),
+        deadline: new Date(Number(campaign.deadline)).toISOString(),
+        amountCollected: ethers.formatEther(
+          campaign.currentAmount.toString()
+        ),
+        image: campaign.imageUrl,
+        pId: i,
+      }));
+    } catch (error) {
+      console.error("Failed to fetch campaigns:", error);
+      throw error;
+    }
+  };
+
   return (
     <StateContext.Provider
       value={{
@@ -83,6 +115,7 @@ export const StateContextProvider = ({ children }) => {
         contract,
         connect,
         createCampaign: publishCampaign,
+        getCampaigns,
         isLoading,
         error,
       }}
