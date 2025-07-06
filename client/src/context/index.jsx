@@ -38,11 +38,17 @@ export const StateContextProvider = ({ children }) => {
 
   const contract = getContract({
     client,
-    chain: defineChain(import.meta.env.VITE_TEMPLATE_CHAIN_ID),
+    chain: defineChain({
+      id: parseInt(import.meta.env.VITE_TEMPLATE_CHAIN_ID, 10),
+    }),
     address: import.meta.env.VITE_TEMPLATE_CONTRACT_ADDRESS,
   });
 
-  const { mutateAsync: sendTransaction, isLoading, error } = useSendTransaction();
+  const {
+    mutateAsync: sendTransaction,
+    isLoading,
+    error,
+  } = useSendTransaction();
 
   const publishCampaign = async (form) => {
     try {
