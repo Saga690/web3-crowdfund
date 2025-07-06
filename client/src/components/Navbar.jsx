@@ -48,6 +48,45 @@ const Navbar = () => {
           </div>
         </Link>
       </div>
+
+      <div className="sm:hidden flex justify-between items-center relative">
+          <div className="w-[40px] h-[40px] rounded-[10px] bg-[#2c2f32] flex justify-center items-center cursor-pointer" >
+            <img src={thirdweb} alt="pp" className="w-[60%] h-[60%] object-contain" />
+          </div>
+          <img src={menu} alt="menu" className="w-[34px] h-[34px] object-contain cursor-pointer" onClick={() => setToggle(!toggle)} />
+          <div className={`${!toggle ? "-translate-y-[100vh]" : "translate-y-[0]"} py-4 bg-[#1c1c24] absolute top-[60px] right-0 left-0 mx-4 my-2 transition-all duration-700 ease-in-out z-10 shadow-secondary`}>
+            <ul className="mb-4">
+              {navlinks.map((link) => (
+                <li
+                  key={link.name}
+                  className={`${active === link.name ? "bg-[#3a3a43]" : ""} py-2 px-4 flex text-[16px] font-normal text-[#808191] hover:bg-[#3a3a43] cursor-pointer`}
+                  onClick={() => {
+                    setActive(link.name);
+                    setToggle(false);
+                    navigate(link.link);
+                  }}
+                >
+                  <img src={link.imgUrl} alt={link.name} className={`w-[24px] h-[24px] object-contain ${active === link.name ? 'grayscale-0' : 'grayscale'}`} />
+                  <p className={`ml-[20px] font-semibold text-[14px] ${active === link.name ? 'text-[#1dc071]' : 'text-[@808191]'}`}>{link.name}</p>
+                </li>
+              ))}
+            </ul>
+            <div className="flex mx-4">
+              <CustomButton
+                btnType="button"
+                title={address ? "Create a campaign" : "Connect"}
+                styles={address ? "bg-[#1dc071] w-full" : "bg-[#8c6dfd] w-full"}
+                handleClick={() => {
+                  if (address) {
+                    navigate("/create-campaign");
+                  } else {
+                    "connect()";
+                  }
+                }}
+              />
+            </div>
+          </div>
+      </div>
     </div>
   );
 };
