@@ -16,6 +16,7 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const account = useActiveAccount();
+  const address = account?.address;
 
   const { connect: connectWallet } = useConnect();
 
@@ -96,14 +97,25 @@ export const StateContextProvider = ({ children }) => {
         description: campaign.description,
         target: ethers.formatEther(campaign.targetAmount.toString()),
         deadline: new Date(Number(campaign.deadline)).toISOString(),
-        amountCollected: ethers.formatEther(
-          campaign.currentAmount.toString()
-        ),
+        amountCollected: ethers.formatEther(campaign.currentAmount.toString()),
         image: campaign.imageUrl,
         pId: i,
       }));
     } catch (error) {
       console.error("Failed to fetch campaigns:", error);
+      throw error;
+    }
+  };
+
+  const getUserCampaigns = async () => {
+    try {
+      const allCampaigns = await getCampaigns();
+      const userCampaigns = allCampaigns.filter(
+        (campaign) => campaign.owner.toLowerCase() === address.toLowerCase()
+      );
+      return userCampaigns;
+    } catch (error) {
+      console.error("Failed to fetch user campaigns:", error);
       throw error;
     }
   };
@@ -116,6 +128,7 @@ export const StateContextProvider = ({ children }) => {
         connect,
         createCampaign: publishCampaign,
         getCampaigns,
+        getUserCampaigns,
         isLoading,
         error,
       }}
