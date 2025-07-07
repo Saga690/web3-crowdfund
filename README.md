@@ -28,7 +28,7 @@ Users can:
 | Ethers v6    | `.parseEther()` is the new `BigInt hell` |
 | Sepolia      | Real enough to flex, fake enough to not go broke |
 
-## 🖼Features
+## Features
 
 - **Create Campaigns**: Because every idea deserves a smart contract, even dumb ones.
 - **Donate ETH**: To anyone brave enough to publish their dreams to the blockchain.
