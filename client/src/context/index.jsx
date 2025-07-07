@@ -120,6 +120,47 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
+  const donate = async (pId, amount) => {
+    try {
+      const tx = prepareContractCall({
+        contract,
+        method: "function donateToCampaign(uint256 _campaignId) payable",
+        params: [pId],
+        value: ethers.parseEther(amount.toString()),
+      });
+
+      const receipt = await sendTransaction(tx);
+      return receipt;
+    } catch (error) {
+      console.error("Donation failed:", error);
+      throw error;
+    }
+  };
+
+  const getDonations = async (pId) => {
+    try {
+      const data = await readContract({
+        contract,
+        method:
+          "function getBackers(uint256 _campaignId) view returns (address[], uint256[])",
+        params: [pId],
+      });
+
+      const numberOfDonations = data[0].length;
+      const donators = [];
+      for (let i = 0; i < numberOfDonations; i++) {
+        donators.push({
+          donator: data[0][i],
+          amount: ethers.formatEther(data[1][i].toString()),
+        });
+      }
+      return donators;
+    } catch (error) {
+      console.error("Failed to fetch donations:", error);
+      throw error;
+    }
+  };
+
   return (
     <StateContext.Provider
       value={{
@@ -129,6 +170,8 @@ export const StateContextProvider = ({ children }) => {
         createCampaign: publishCampaign,
         getCampaigns,
         getUserCampaigns,
+        donate,
+        getDonations,
         isLoading,
         error,
       }}
