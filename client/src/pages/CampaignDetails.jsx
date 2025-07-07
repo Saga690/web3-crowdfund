@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { ethers } from "ethers";
 import { useStateContext } from "../context";
-import { CustomButton } from "../components";
+import { CustomButton, Loader } from "../components";
 import { calculateBarPercentage, daysLeft } from "../utils";
 import { thirdweb } from "../assets";
 import CountBox from "../components/CountBox";
@@ -35,7 +35,7 @@ const CampaignDetails = () => {
 
   return (
     <div>
-      {loading && "Loading..."}
+      {loading && <Loader />}
       <div className="flex flex-col md:flex-row gap-[30px] w-full mt-10">
         <div className="flex-1 min-w-[350px] flex flex-col">
           <img
