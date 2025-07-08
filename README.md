@@ -73,7 +73,6 @@ Contract methods:
 ## Known Issues
 
 - Your real wallet gets connected. Your fake ETH disappears. Win-win.
-- Transaction hashes may return `undefined`. It’s a **feature**.
 - Gas fees simulated for dramatic effect.
 - Campaigns can't be deleted. It’s *immutable, baby*.
 
