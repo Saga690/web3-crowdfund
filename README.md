@@ -106,3 +106,5 @@ MIT — because legal stuff.
 If this breaks, it’s probably your fault. If it works, it’s definitely mine.
 
 GLHF.
+
+<3 Saga
